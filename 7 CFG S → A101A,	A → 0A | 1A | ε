@@ -1,0 +1,46 @@
+#include <stdio.h>
+#include <stdbool.h>
+#include <string.h>
+
+// Function to check if the given string belongs to the CFG A -> 0A | 1A | ε
+bool belongsToA(char *str, int start, int end) {
+    if (start > end) {
+        return true; // ε production
+    }
+    
+    if (str[start] == '0' || str[start] == '1') {
+        return belongsToA(str, start + 1, end);
+    }
+    
+    return false;
+}
+
+// Function to check if the given string belongs to the CFG S -> A101A
+bool belongsToS(char *str, int start, int end) {
+    if (end - start + 1 < 5) {
+        return false; // Not enough characters to match S production
+    }
+    
+    if (str[start] == 'A' && str[start + 1] == '1' && str[start + 2] == '0' &&
+        str[start + 3] == '1' && str[start + 4] == 'A') {
+        return belongsToA(str, start + 5, end);
+    }
+    
+    return false;
+}
+
+int main() {
+    char str[100];
+    printf("Enter a string: ");
+    scanf("%s", str);
+    
+    int len = strlen(str);
+    
+    if (belongsToS(str, 0, len - 1)) {
+        printf("The given string belongs to the language defined by the CFG.\n");
+    } else {
+        printf("The given string does not belong to the language defined by the CFG.\n");
+    }
+    
+    return 0;
+}
