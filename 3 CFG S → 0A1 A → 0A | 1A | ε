@@ -1,0 +1,57 @@
+#include <stdio.h>
+#include <stdbool.h>
+#include <string.h>
+
+// Function to parse A non-terminal
+bool parseA(const char *input, int *index) {
+    int originalIndex = *index;
+
+    if (input[*index] == '0') {
+        (*index)++;
+        if (parseA(input, index)) {
+            return true;
+        }
+        return false;
+    } else if (input[*index] == '1') {
+        (*index)++;
+        if (parseA(input, index)) {
+            return true;
+        }
+        return false;
+    } else {
+        return true; // ε transition
+    }
+
+    *index = originalIndex; // Backtrack if no valid production
+    return false;
+}
+
+// Function to parse S non-terminal
+bool parseS(const char *input) {
+    int index = 0;
+    if (input[index] == '0') {
+        index++;
+        if (parseA(input, &index)) {
+            if (input[index] == '1' && input[index + 1] == '\0') {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+int main() {
+    char input[100];
+
+    printf("Enter a string: ");
+    scanf("%s", input);
+
+    if (parseS(input)) {
+        printf("Accepted\n");
+    } else {
+        printf("Not Accepted\n");
+    }
+
+    return 0;
+}
+
