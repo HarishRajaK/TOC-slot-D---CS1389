@@ -1,0 +1,46 @@
+#include <stdio.h>
+#include <stdbool.h>
+
+// DFA transition function
+int transition(int state, char input) {
+    switch (state) {
+        case 0:
+            if (input == 'a') return 1;
+            break;
+        case 1:
+            if (input == 'a') return 1;
+            break;
+    }
+    return -1; // Invalid transition or input
+}
+
+// DFA simulation function
+bool simulateDFA(const char *input) {
+    int currentState = 0;
+    int i = 0;
+
+    while (input[i] != '\0') {
+        currentState = transition(currentState, input[i]);
+        if (currentState == -1) {
+            return false; // Invalid input or transition
+        }
+        i++;
+    }
+
+    return currentState == 1; // Check if the final state is reached
+}
+
+int main() {
+    char input[100];
+    
+    printf("Enter a string: ");
+    scanf("%s", input);
+
+    if (simulateDFA(input)) {
+        printf("Accepted\n");
+    } else {
+        printf("Not Accepted\n");
+    }
+
+    return 0;
+}
