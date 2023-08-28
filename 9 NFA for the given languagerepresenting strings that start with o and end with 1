@@ -1,0 +1,48 @@
+#include <stdio.h>
+#include <stdbool.h>
+#include <string.h>
+
+// Define the NFA transition function
+int transition(int state, char input) {
+    switch (state) {
+        case 0:
+            if (input == 'o') return 1;
+            break;
+        case 1:
+            if (input == '1') return 2;
+            if (input == 'o') return 1;
+            break;
+        case 2:
+            return 2; // Loop on final state
+    }
+    return -1; // Invalid transition
+}
+
+// Function to simulate NFA
+bool simulateNFA(char *str) {
+    int state = 0;
+    int len = strlen(str);
+    
+    for (int i = 0; i < len; i++) {
+        state = transition(state, str[i]);
+        if (state == -1) {
+            return false; // Invalid transition
+        }
+    }
+    
+    return state == 2; // Should be in the final state at the end
+}
+
+int main() {
+    char str[100];
+    printf("Enter a string: ");
+    scanf("%s", str);
+    
+    if (simulateNFA(str)) {
+        printf("The given string is in the language of the NFA.\n");
+    } else {
+        printf("The given string is not in the language of the NFA.\n");
+    }
+    
+    return 0;
+}
